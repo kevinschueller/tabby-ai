@@ -1,0 +1,45 @@
+// Styles for TerminalTabComponent when AI chat is active
+
+.terminal-and-ai-chat-container {
+    display: flex;
+    height: 100%;
+    width: 100%;
+
+    .terminal-pane {
+        flex-grow: 1;
+        height: 100%;
+        width: 60%; // Example: terminal takes 60%
+        display: flex;
+        flex-direction: column; // Important for terminal's own layout
+    }
+
+    .ai-chat-pane {
+        width: 40%; // Example: AI chat takes 40%
+        height: 100%;
+        border-left: 1px solid var(--bs-border-color); // Use Tabby's theme variable if available
+        display: flex;
+        flex-direction: column; // Important for ai-chat's own layout
+
+        ai-chat {
+            flex-grow: 1; // Ensure ai-chat component fills the pane
+        }
+    }
+}
+
+// Ensure the original content area and AI chat fill their panes
+.content, // From baseTerminalTab.component.pug
+ai-chat {
+    flex-grow: 1;
+    height: 100%;
+    overflow: hidden; // Prevent double scrollbars if content overflows
+}
+
+// Hide AI chat pane when not active
+.ai-chat-pane-hidden {
+    display: none !important;
+}
+
+// When AI chat is hidden, terminal pane takes full width
+.terminal-pane-full-width {
+    width: 100% !important;
+}

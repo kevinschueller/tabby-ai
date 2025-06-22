@@ -1,0 +1,26 @@
+.chat-container
+    .message-history(#messageHistory)
+        .message-entry(*ngFor="let msg of messages", [ngClass]="'message-' + msg.role")
+            .role {{ msg.role === 'user' ? 'You' : (msg.role === 'assistant' ? 'AI' : 'System') }}
+            .content([innerHTML]="msg.content | keepHtml") // We'll need a pipe to sanitize HTML if the AI can produce it
+
+    .input-area
+        textarea.form-control(
+            [(ngModel)]="userInput",
+            placeholder="Type your message here... (Shift+Enter for new line)",
+            (keydown.enter)="!$event.shiftKey && sendMessage(); $event.shiftKey ? null : $event.preventDefault()",
+            [disabled]="isLoading"
+        )
+        button.btn.btn-primary(
+            (click)="sendMessage()",
+            [disabled]="isLoading || !userInput.trim()"
+        )
+            span(*ngIf="!isLoading") Send
+            span(*ngIf="isLoading")
+                i.fas.fa-spinner.fa-spin
+                |  Sending...
+
+// Basic styling for now, will be improved in the SCSS file.
+// We'll need a pipe `keepHtml` to render potential HTML content safely.
+// For now, assuming text content. If AI can output markdown or HTML,
+// we'll need to handle that (e.g. using a markdown library).

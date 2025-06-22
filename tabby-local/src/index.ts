@@ -7,6 +7,7 @@ import { ToastrModule } from 'ngx-toastr'
 import TabbyCorePlugin, { HostAppService, ToolbarButtonProvider, TabRecoveryProvider, ConfigProvider, HotkeysService, HotkeyProvider, TabContextMenuItemProvider, CLIHandler, ProfileProvider } from 'tabby-core'
 import TabbyTerminalModule from 'tabby-terminal'
 import { SettingsTabProvider } from 'tabby-settings'
+import AIAssistantModule from 'tabby-ai-assistant/src/index' // Import AI Assistant Module
 
 import { TerminalTabComponent } from './components/terminalTab.component'
 import { ShellSettingsTabComponent } from './components/shellSettingsTab.component'
@@ -35,6 +36,7 @@ import { LocalProfilesService } from './profiles'
         ToastrModule,
         TabbyCorePlugin,
         TabbyTerminalModule,
+        AIAssistantModule, // Import the AI Assistant module
     ],
     providers: [
         { provide: SettingsTabProvider, useClass: ShellSettingsTabProvider, multi: true },

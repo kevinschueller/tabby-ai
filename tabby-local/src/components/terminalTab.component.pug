@@ -1,0 +1,39 @@
+.terminal-and-ai-chat-container
+    // Terminal Pane
+    .terminal-pane([class.terminal-pane-full-width]="!showAiChat")
+        .terminal-toolbar-spacer
+        .content(#content, [style.opacity]='frontendIsReady ? 1 : 0')
+        search-panel(
+            *ngIf='showSearchPanel && hasFocus && frontend',
+            @toolbarSlide,
+            [@.disabled]='!config.store.accessibility.animations',
+            [frontend]='frontend',
+            (close)='showSearchPanel = false; frontend.cancelSearch()'
+        )
+        // Toolbar pin button - might need to be repositioned or handled differently with split view
+        button.btn.btn-sm.btn-link.toolbar-pin-button(
+            *ngIf='enableToolbar && !pinToolbar && !showAiChat', // Only show if AI chat is not visible for now
+            (click)='togglePinToolbar()',
+            (mouseenter)='showToolbar()',
+            (mouseleave)='hideToolbar()'
+        )
+            i.fas.fa-wrench
+
+    // AI Chat Pane
+    .ai-chat-pane([class.ai-chat-pane-hidden]="!showAiChat")
+        ai-chat(
+            *ngIf="showAiChat",
+            (executeCommand)="executeCommandFromAI($event)",
+            [terminalOutput]="terminalOutputToAI.asObservable()"
+        )
+            // This component is from tabby-ai-assistant plugin
+            // It will need an Input for terminalOutput
+            // and an Output for executeCommand.
+
+// Notes:
+// - The `ai-chat` component needs to be correctly imported and declared in the module
+//   owning TerminalTabComponent or a shared module. (AIAssistantModule exports it)
+// - `executeCommandFromAI` is a method on TerminalTabComponent.
+// - `terminalOutputToAI` is an EventEmitter on TerminalTabComponent; we pass its observable form.
+// - Styling in terminalTab.component.scss will handle the flex layout.
+// - Toolbar visibility with AI chat needs consideration. Might be better to have a global toolbar.
